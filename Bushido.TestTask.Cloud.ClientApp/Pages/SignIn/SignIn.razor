@@ -1,0 +1,82 @@
+﻿@page "/signin"
+@using Bushido.TestTask.Cloud.Authentication.Models;
+@using Bushido.TestTask.Cloud.ClientApp.Interfaces;
+@using Bushido.TestTask.Library.Core.Extensions;
+@inject IAuthService _authService;
+@inject NavigationManager navigationManager;
+
+<PageTitle>SignIn</PageTitle>
+
+<div class="main-block">
+    <h1>Sign In</h1>
+    <hr>
+    <hr>
+    <label id="icon" for="name"><i class="fas fa-envelope"></i></label>
+    <input @bind=SignInModel.Email type="text" name="name" id="name" placeholder="Email" required />
+    <label id="icon" for="name"><i class="fas fa-unlock-alt"></i></label>
+    <input @bind=SignInModel.Password type="password" name="name" id="name" placeholder="Password" required />
+    <hr>
+    <span style="color:red">@ErrorMsg</span>
+    <div class="btn-block">
+        @if (IsLoading)
+        {
+            <button disabled>Signing...</button>
+        }
+        else
+        {
+            <button @onclick=ProcessSignIn>Sign in</button>
+
+        }
+    </div>
+</div>
+
+@code {
+    private SignInModel SignInModel { get; set; }
+    private string ErrorMsg { get; set; }
+    private bool IsLoading { get; set; }
+
+    public SignIn()
+    {
+        RefreshForm();
+    }
+
+    public async Task ProcessSignIn()
+    {
+
+        IsLoading = true;
+        try
+        {
+            ErrorMsg = null;
+            if (SignInModel.Password.IsEmpty() || SignInModel.Email.IsEmpty())
+            {
+                ErrorMsg = "Invalid inputs. Validation Error";
+                return;
+            }
+
+
+            var result = await _authService.SignIn(SignInModel);
+
+            if (!result.IsEmpty())
+            {
+                navigationManager.NavigateTo("userpanel");
+                RefreshForm();
+            }
+            else
+            {
+                ErrorMsg = "Invalid credentials";
+            }
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    private void RefreshForm()
+    {
+        //it just for quickly testing
+        SignInModel = new SignInModel();
+        SignInModel.Email = "test@bushido.com";
+        SignInModel.Password = "Password*8";
+    }
+}

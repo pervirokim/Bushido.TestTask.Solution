@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33530.505
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bushido.TestTask.Cloud.Authentication", "Bushido.TestTask.Cloud.Authentication.csproj", "{C13FE30A-E84C-4244-976C-7AFF4E6D94E3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B2CAACC7-0A57-445A-80A1-89D7C674B01C} = {B2CAACC7-0A57-445A-80A1-89D7C674B01C}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bushido.TestTask.Library.Core", "..\Bushido.TestTask.Library.Core\Bushido.TestTask.Library.Core.csproj", "{B2CAACC7-0A57-445A-80A1-89D7C674B01C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bushido.TestTask.Cloud.CryptoTrading", "..\Bushido.TestTask.Cloud.CryptoTrading\Bushido.TestTask.Cloud.CryptoTrading.csproj", "{D650FB27-D8B0-4ADC-8F0D-8E02A03EBB53}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B2CAACC7-0A57-445A-80A1-89D7C674B01C} = {B2CAACC7-0A57-445A-80A1-89D7C674B01C}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bushido.TestTask.Library.Tests", "..\Bushido.TestTask.Library.Tests\Bushido.TestTask.Library.Tests.csproj", "{6634E9A8-55A4-43B2-8C37-E0C112F285F6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bushido.TestTask.Cloud.ClientApp", "..\Bushido.TestTask.Cloud.ClientApp\Bushido.TestTask.Cloud.ClientApp.csproj", "{7E238966-844D-4B47-B5F6-9BF8233CBDF8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C13FE30A-E84C-4244-976C-7AFF4E6D94E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C13FE30A-E84C-4244-976C-7AFF4E6D94E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C13FE30A-E84C-4244-976C-7AFF4E6D94E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C13FE30A-E84C-4244-976C-7AFF4E6D94E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2CAACC7-0A57-445A-80A1-89D7C674B01C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2CAACC7-0A57-445A-80A1-89D7C674B01C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2CAACC7-0A57-445A-80A1-89D7C674B01C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2CAACC7-0A57-445A-80A1-89D7C674B01C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D650FB27-D8B0-4ADC-8F0D-8E02A03EBB53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D650FB27-D8B0-4ADC-8F0D-8E02A03EBB53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D650FB27-D8B0-4ADC-8F0D-8E02A03EBB53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D650FB27-D8B0-4ADC-8F0D-8E02A03EBB53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6634E9A8-55A4-43B2-8C37-E0C112F285F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6634E9A8-55A4-43B2-8C37-E0C112F285F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6634E9A8-55A4-43B2-8C37-E0C112F285F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6634E9A8-55A4-43B2-8C37-E0C112F285F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E238966-844D-4B47-B5F6-9BF8233CBDF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E238966-844D-4B47-B5F6-9BF8233CBDF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E238966-844D-4B47-B5F6-9BF8233CBDF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E238966-844D-4B47-B5F6-9BF8233CBDF8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {33800A79-F397-43D1-8DE4-363062832CC3}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,94 @@
+﻿@page "/signup"
+@using Bushido.TestTask.Cloud.Authentication.Models;
+@using Bushido.TestTask.Cloud.ClientApp.Interfaces;
+@using Bushido.TestTask.Library.Core.Extensions;
+@inject IAuthService _authService;
+@inject NavigationManager navigationManager;
+
+<PageTitle>SignUp</PageTitle>
+
+<div class="main-block">
+    <h1>Sign Up</h1>
+    <hr>
+    <hr>
+    <label id="icon" for="name"><i class="fas fa-envelope"></i></label>
+    <input @bind=SignUpModel.Email type="text" name="name" id="name" placeholder="Email" required />
+
+    <label id="icon" for="firstname"><i class="fas fa-unlock-alt"></i></label>
+    <input @bind=SignUpModel.FirstName type="text" name="firstname" id="firstname" placeholder="Firstname" required />
+
+    <label id="icon" for="lastname"><i class="fas fa-unlock-alt"></i></label>
+    <input @bind=SignUpModel.LastName type="text" name="lastname" id="lastname" placeholder="Lastname" required />
+
+    <label id="icon" for="password"><i class="fas fa-unlock-alt"></i></label>
+    <input @bind=SignUpModel.Password type="password" name="password" id="password" placeholder="Password" required />
+    <label id="icon" for="confirmpassword"><i class="fas fa-unlock-alt"></i></label>
+    <input @bind=SignUpModel.ConfirmPassword type="password" name="confirmpassword" id="confirmpassword" placeholder="Confirm Password" required />
+    <hr>
+    <span style="color:red">@ErrorMsg</span>
+    <div class="btn-block">
+        @if (IsLoading)
+        {
+            <button disabled>processing...</button>
+        }
+        else
+        {
+            <button @onclick=ProcessSignUp>Sign Up</button>
+
+        }
+    </div>
+</div>
+@code {
+    private SignUpModel SignUpModel { get; set; }
+    private string ErrorMsg { get; set; }
+    private bool IsLoading { get; set; }
+
+    public SignUp()
+    {
+        RefreshForm();
+    }
+
+    public async Task ProcessSignUp()
+    {
+
+        IsLoading = true;
+        try
+        {
+            ErrorMsg = null;
+            if (SignUpModel.Password.IsEmpty() || SignUpModel.Email.IsEmpty() || SignUpModel.ConfirmPassword != SignUpModel.Password || SignUpModel.FirstName.IsEmpty() || SignUpModel.LastName.IsEmpty())
+            {
+                ErrorMsg = "Invalid inputs. Validation Error";
+                return;
+            }
+
+
+            var result = await _authService.SignUp(SignUpModel);
+
+            if (!result.IsEmpty())
+            {
+                navigationManager.NavigateTo("userpanel");
+
+                RefreshForm();
+            }
+            else
+            {
+                ErrorMsg = "Invalid credentials";
+            }
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    private void RefreshForm()
+    {
+        //it just for quickly testing
+        SignUpModel = new SignUpModel();
+        SignUpModel.Email = "testnewuser@bushido.com";
+        SignUpModel.Password = "Password*8";
+        SignUpModel.FirstName = "TEST NEW USER";
+        SignUpModel.LastName = "TEST NEW USER";
+        SignUpModel.ConfirmPassword = SignUpModel.Password;
+    }
+}

@@ -1,0 +1,134 @@
+﻿@page "/userpanel"
+@using Bushido.TestTask.Cloud.Authentication.Models;
+@using Bushido.TestTask.Cloud.CryptoTrading.Models;
+@using Bushido.TestTask.Cloud.ClientApp.Interfaces;
+@using Bushido.TestTask.Library.Core.Extensions;
+@inject IAuthService _authService;
+@inject IOrderService _orderService;
+@inject IBalanceService _balanceService;
+@inject NavigationManager navigationManager;
+
+<PageTitle>UserPanel</PageTitle>
+
+
+<h1>My balance</h1>
+
+<button @onclick=Refresh>Refresh balance</button>
+<table>
+    <tr>
+        <th>Coin Name</th>
+        <th>Quantity</th>
+    </tr>
+    @{
+        if (_balanceService.Balance != null)
+        {
+            foreach (var balance in _balanceService.Balance)
+            {
+                <tr>
+                    <td>@balance.Cryptocurrency?.Name</td>
+                    <td>@balance.Quantity</td>
+                </tr>
+            }
+        }
+    }
+</table>
+<span style="color:red">@ErrorMsg</span>
+
+<div style="display:flex; gap:10px;">
+    @{
+        if (_balanceService.Balance != null)
+        {
+
+
+            <select @bind=NameToSold class="jui-dropdown__select">
+                @{
+                    foreach (var balance in _balanceService.Balance)
+                    {
+                        if (NameToSold is null)
+                        {
+                            NameToSold = @balance.Cryptocurrency?.Name;
+                        }
+                        <option>@balance.Cryptocurrency?.Name</option>
+                    }
+                }
+            </select>
+            <input @bind=QuantityExchange placeholder="quantity to exchange on" />
+            <span>Exchange on</span>
+
+            <select @bind=NameToBuy class="jui-dropdown__select">
+                @{
+                    foreach (var balance in _balanceService.Balance)
+                    {
+                        if (NameToBuy is null)
+                        {
+                            NameToBuy = @balance.Cryptocurrency?.Name;
+                        }
+                        <option>@balance.Cryptocurrency?.Name</option>
+                    }
+                }
+            </select>
+        }
+    }
+
+    <button @onclick=CreateOrder>Create Order</button>
+
+</div>
+
+@code {
+
+    private float QuantityExchange { get; set; }
+    private string NameToSold { get; set; }
+    private string NameToBuy { get; set; }
+    private string ErrorMsg { get; set; }
+
+    public UserPanel()
+    {
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Refresh();
+    }
+
+    public async Task Refresh()
+    {
+        NameToSold = null;
+        NameToBuy = null;
+        ErrorMsg = null;
+        QuantityExchange = 0;
+        if (_authService.Token.IsEmpty())
+            navigationManager.NavigateTo("signin");
+        else
+        {
+            _balanceService.Balance = null;
+            await _balanceService.GetBalance();
+        }
+    }
+
+    public async Task CreateOrder()
+    {
+        if (NameToSold.IsEmpty() || NameToBuy.IsEmpty() ||
+        QuantityExchange <= 0 ||
+               NameToSold == NameToBuy ||
+        _balanceService.Balance.FirstOrDefault(b => b.Cryptocurrency.Name == NameToSold).Quantity < QuantityExchange)
+        {
+            ErrorMsg = "Invalid inputs. Validation Error";
+            return;
+        }
+
+        Order order = new Order();
+        order.CryptoCurrencyToBuyId = _balanceService.Balance.FirstOrDefault(b => b.Cryptocurrency.Name == NameToBuy).CryptocurrencyId;
+        order.CryptoCurrencyToSoldId = _balanceService.Balance.FirstOrDefault(b => b.Cryptocurrency.Name == NameToSold).CryptocurrencyId;
+        order.Quantity = QuantityExchange;
+
+        bool orderCreationResult = await _orderService.Create(order);
+        if (orderCreationResult)
+        {
+            await Refresh();
+        }
+        else
+        {
+            ErrorMsg = "Invalid order creation. Some validation issues on api";
+        }
+    }
+}
